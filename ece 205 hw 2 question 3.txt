@@ -1,0 +1,49 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+//question 3
+int main()
+{
+    //variables
+    double height, weight;
+    int age;
+    //prompts for user input
+    cout <<"Enter height in inches: ";
+    cin >> height;
+
+    cout <<"Enter weight in pounds: ";
+    cin >> weight;
+
+    cout << "Enter your age in years: ";
+    cin >> age;
+
+//calculations
+double hat_size = 2.9 * (weight / height); 
+
+double jacket_size = (height * weight) / 288.0 ; //calculate jacket size
+if (age > 30) 
+{
+    int extra_decades = (age - 30) / 10; //calculate how many decades over 30
+    jacket_size += extra_decades * (1.0 / 8.0); //add 1/8 inch for each decade over 30
+}
+
+double waist_size = weight / 5.7; //calculate waist size
+if (age > 28) 
+{
+    int extra_two_years = (age - 28) / 2; //calculate how many 2-year periods over 28
+    waist_size += extra_two_years * (1.0 / 10.0); //add 1/10 inch for each 2-year period over 28
+}
+
+
+cout << fixed << setprecision(2); //output to 2 decimal places
+
+//outputs
+cout << "Hat size: " << hat_size << endl; 
+cout << "Jacket size: " << jacket_size << endl; 
+cout << "Waist size: " << waist_size << endl;
+
+return 0;
+}

@@ -1,0 +1,56 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+//Question 4
+int main()
+{
+    const int total_finalists = 25; //total number of finalists
+    const int prizes = 4; //number of prizes to be awarded
+    int winners[prizes]; //array to hold winner numbers
+    int count = 0; //counter for number of winners selected
+
+    srand (time(0)); //seed random number generator
+
+    while (count < prizes)
+    {
+        int pick = rand() % total_finalists + 1; //pick a random finalist number between 1 and 25
+        bool already_picked = false; //flag to check if finalist has already been picked
+
+        for (int i = 0; i < count; i++)
+        {
+            if (winners[i] == pick)
+            {
+                already_picked = true; //finalist has already been picked
+                break;
+            }
+        }
+
+        if (!already_picked) //add to winners if not already picked
+        {
+            winners[count] = pick;
+            count++; //increment winner count
+        }
+    }
+
+    //output
+    cout << "The winners are: ";
+    for (int i = 0; i < prizes; i++)
+    {
+        cout << winners[i] << " "; //output winner number
+
+        if (i != prizes - 1) 
+        {
+            cout << ", "; //add comma and space between winners except after the last one
+        }
+        cout << endl;
+
+    
+    }
+    return 0;
+}
+
