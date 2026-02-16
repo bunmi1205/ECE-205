@@ -1,0 +1,45 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+//Question 1
+const double G = 6.673e-8; //gravitational constant
+
+//function to calculate gravitational force 
+double force (double m1, double m2, double d) 
+{
+    //convert masses from kg to g
+    m1 = m1*1000;
+    m2 = m2*1000;
+
+    return (G * m1 * m2) / pow(d,2);
+}
+
+int main ()
+{
+    double m1, m2, d;
+    int repeat = 1; //controls loop for repeating calculations
+
+    while (repeat == 1)
+    {
+    //prompts for user input
+    cout << "Enter mass m1 (in kg): ";
+    cin >> m1;
+    cout << "Enter mass m2 (in kg): ";
+    cin >> m2;
+    cout << "Enter distance between the masses (in cm): ";
+    cin >> d;
+
+    //outputs
+    cout << "The gravitational force between the two masses is: " << force(m1, m2, d) << " dynes" << endl;
+
+    cout <<"Enter 1 to repeat or any other key to stop:";
+    cin >> repeat;
+    }
+    return 0;
+
+    
+}
+
