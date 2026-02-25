@@ -1,0 +1,73 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+int main()
+{
+    //USER INPUT
+    int start_time;
+    cout <<"Enter the start time in military notation: ";
+    cin >> start_time;
+
+    int end_time;
+    cout <<"Enter the end time in military notation: ";
+    cin >> end_time;
+
+    //CONVERT TO 12-HOUR NOTATION
+    int notation_12hours_start;
+
+    if (start_time >= 1200)
+    {
+        notation_12hours_start = start_time - 1200; //distinguish between AM and PM by subtracting 1200 from the time if it's PM
+        //add the colon between hours and minutes
+        int notation_12hours_start_hours = notation_12hours_start / 100; //get the hours by dividing by 100
+        int notation_12hours_start_minutes = notation_12hours_start % 100; //get the minutes by taking the modulus of 100
+        notation_12hours_start = notation_12hours_start_hours * 100 + notation_12hours_start_minutes; //combine hours and minutes back into a single integer for output
+
+        cout << "Start time in 12-hour notation: " << notation_12hours_start_hours << ":" <<setw(2)<<setfill('0')<<notation_12hours_start_minutes<<" P" << endl; //output the start time in 12-hour notation with "P" for PM and use setw and setfill to ensure minutes are always displayed as two digits
+    }
+    else
+    {
+        notation_12hours_start = start_time; //if the time is AM, we can keep it as is for conversion to 12-hour notation
+        int notation_12hours_start_hours = notation_12hours_start / 100; //get the hours by dividing by 100
+        int notation_12hours_start_minutes = notation_12hours_start % 100;  
+        cout << "Start time in 12-hour notation: " << notation_12hours_start_hours << ":" <<setw(2)<<setfill('0')<<notation_12hours_start_minutes<<" A" << endl; //output the start time in 12-hour notation with "A" for AM and use setw and setfill to ensure minutes are always displayed as two digits
+    }
+    
+    int notation_12hours_end;
+
+    if (end_time >= 1200)
+    {
+        notation_12hours_end = end_time - 1200; //distinguish between AM and PM by subtracting 1200 from the time if it's PM
+        //add the colon between hours and minutes
+        int notation_12hours_end_hours = notation_12hours_end / 100; //get the hours by dividing by 100
+        int notation_12hours_end_minutes = notation_12hours_end % 100;  //get the minutes by taking the modulus of 100
+        notation_12hours_end = notation_12hours_end_hours * 100 + notation_12hours_end_minutes; //combine hours and minutes back into a single integer for output
+        cout << "End time in 12-hour notation: " << notation_12hours_end_hours << ":" <<setw(2)<<setfill('0')<<notation_12hours_end_minutes<<" P" << endl; //output the end time in 12-hour notation with "P" for PM and use setw and setfill to ensure minutes are always displayed as two digits
+    }
+    else
+    {
+        notation_12hours_end = end_time; //if the time is AM, we can keep it as is for conversion to 12-hour notation
+        int notation_12hours_end_hours = notation_12hours_end / 100;   //get the hours by dividing by 100
+        int notation_12hours_end_minutes = notation_12hours_end % 100; //get the minutes by taking the modulus of 100
+        notation_12hours_end = notation_12hours_end_hours * 100 + notation_12hours_end_minutes; //combine hours and minutes back into a single integer for output
+        cout << "End time in 12-hour notation: " << notation_12hours_end_hours << ":" <<setw(2)<<setfill('0')<<notation_12hours_end_minutes<<" A" << endl; //output the end time in 12-hour notation with "A" for AM and use setw and setfill to ensure minutes are always displayed as two digits
+    }
+    
+    int duration; //calculate the duration of the event by subtracting the start time from the end time
+    duration = end_time - start_time; //if the duration is negative, it means the event goes past midnight, so we need to add 2400 to the duration to get the correct duration in minutes
+    if (duration < 0)
+    {
+        duration += 2400; //add 2400 to the duration to get the correct duration in minutes if the event goes past midnight
+    }      
+    
+
+    int duration_minutes = duration /100 * 60 + duration % 100; //convert duration to minutes
+    cout << "Duration in minutes: " << duration_minutes << " minutes" << endl; //output the duration in minutes
+
+    return 0;
+
+}
