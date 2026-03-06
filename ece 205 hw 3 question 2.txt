@@ -1,0 +1,40 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+//function prototypes
+void triangle(double a, double b, double c, double &area, double &perimeter);
+
+int main()
+{
+    double a, b, c; // sides of the triangle
+    double area, perimeter; // variables to store the area and perimeter of the triangle
+
+    cout << "Enter the three sides of the triangle: ";
+    cin >> a >> b >> c;
+
+    triangle(a, b, c, area, perimeter); // call the function to calculate the area and perimeter of the triangle
+
+    cout << "Perimeter: " << perimeter << endl;
+    cout << "Area: " << area << endl;
+
+    return 0;
+}
+
+void triangle(double a, double b, double c, double &area, double &perimeter) // function to calculate the area and perimeter of a triangle given its sides
+{
+    if ((a + b > c) && (a + c > b) && (b + c > a)) // ensure that the sides can form a valid triangle
+    {
+        perimeter = a + b + c; //calculate the perimeter
+
+        double s = perimeter / 2; // calculate the semi-perimeter
+
+        area = sqrt(s * (s - a) * (s - b) * (s - c)); // calculate the area using Heron's formula
+    }
+    else // if the sides cannot form a valid triangle, set area and perimeter to 0
+    {
+        perimeter = 0;
+        area = 0;
+    }
+}

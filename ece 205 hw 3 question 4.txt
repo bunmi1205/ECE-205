@@ -1,0 +1,54 @@
+#include <iostream>
+
+using namespace std;
+
+//function prototypes
+void input(int &lb, int &oz); // function to get user input for weight in pounds and ounces
+void convert_weight(int lb, int oz, int &kg, int &g); // function to convert weight from pounds and ounces to kilograms and grams
+void display(int kg, int g); // function to display the converted weight
+
+int main()
+{
+    int lb, oz; // variables to store user input for weight in pounds and ounces
+    int kg, g; // variables to store the converted weight in kilograms and grams
+
+    while (true) // loop to continuously get user input until a negative value is entered for either pounds or ounces
+    {
+        input(lb, oz); 
+
+        if (lb < 0 || oz < 0)   // check for negative input to terminate the program
+            break;
+
+        convert_weight(lb, oz, kg, g); // call the function to convert the weight from pounds and ounces to kilograms and grams
+
+        display(kg, g);
+    }
+
+    cout << "Program ended." << endl;
+
+    return 0;
+}
+
+void input(int &lb, int &oz) // function to get user input for weight in pounds and ounces
+{
+    cout << "Enter weight (lb oz): ";
+    cin >> lb >> oz;
+}
+
+void convert_weight(int lb, int oz, int &kg, int &g)
+{
+    // convert ounces to pounds
+    double total_pounds = lb + oz / 16.0;
+
+    // convert pounds to kilograms
+    double total_kg = total_pounds / 2.2046;
+
+    // separate kg and g
+    kg = (int) total_kg;
+    g = (int)((total_kg - kg) * 1000);
+}
+
+void display(int kg, int g) // function to display the converted weight in kilograms and grams
+{
+    cout << "Equivalent weight: " << kg << "kg " << g << "g" << endl;
+}

@@ -1,0 +1,44 @@
+#include <iostream>
+
+using namespace std;
+
+//function prototype
+int minutes_difference(int start, int end); 
+
+int main()
+{
+    int start_time, end_time; // variables to store user input for start and end times in 24-hour format
+
+    cout << "Enter start time (24-hour format): ";
+    cin >> start_time;
+
+    cout << "Enter end time (24-hour format): ";
+    cin >> end_time;
+
+    int minutes = minutes_difference(start_time, end_time); // call the function to calculate the difference in minutes between the start and end times
+
+    cout << "Minutes between times: " << minutes << endl;
+
+    return 0;
+}
+
+int minutes_difference(int start, int end) // function to calculate the difference in minutes between two times given in 24-hour format
+{
+
+    int start_hours = start / 100; // extract hours from the start time by dividing by 100
+    int start_minutes = start % 100; // extract minutes from the start time by taking the modulus of 100
+    int start_total = start_hours * 60 + start_minutes; // convert the start time to total minutes for easier calculation
+
+
+    int end_hours = end / 100; // extract hours from the end time by dividing by 100
+    int end_minutes = end % 100; // extract minutes from the end time by taking the modulus of 100
+    int end_total = end_hours * 60 + end_minutes; // convert the end time to total minutes for easier calculation
+
+
+    if (end_total < start_total) // if the end time is earlier than the start time, we assume it is on the next day and add 1440 minutes (24 hours) to the end time to calculate the correct difference
+    {
+        end_total += 1440; 
+    }
+
+    return end_total - start_total; 
+}

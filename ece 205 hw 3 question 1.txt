@@ -1,0 +1,61 @@
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+//functions
+void input(int &time);
+void convert_time(int time_24hr, int &hours, int &minutes, char &ampm);
+void print_time(int hours, int minutes, char ampm);
+
+int main()
+{
+    int time_24hr; //stores user input time in 24-hour format
+
+    //loop to continuously get user input until a negative value is entered
+    while (true)
+    {
+        input(time_24hr); //get user input for time in 24-hour format
+
+        if (time_24hr < 0) // check for negative input to terminate the program
+            break; // exit the loop if a negative value is entered
+
+        int hours, minutes; // variables to store converted hours and minutes
+        char ampm; // variable to store whether the time is AM or PM
+
+        convert_time(time_24hr, hours, minutes, ampm); // convert the 24-hour time to 12-hour format and determine AM/PM
+        print_time(hours, minutes, ampm); // print the converted time in 12-hour format with AM/PM designation
+    }
+
+    cout << "Program terminated." << endl;
+    return 0;
+}
+
+void input(int &time)
+{
+    cout << "Enter time in 24-hour format (negative to quit): "; // prompt the user for input
+    cin >> time;
+}
+
+void convert_time(int time_24hr, int &hours, int &minutes, char &ampm) 
+{
+    hours = time_24hr / 100; // extract hours by dividing the input by 100
+    minutes = time_24hr % 100; // extract minutes by taking the modulus of 100
+
+    if (hours >= 12) // determine if the time is AM or PM based on the hours
+    {
+        ampm = 'P';
+        if (hours > 12) // convert hours greater than 12 to 12-hour format
+        hours -= 12;
+    }
+    else
+    {
+        ampm = 'A';
+        if (hours == 0) // convert 0 hours to 12 for 12-hour format
+        hours = 12;
+    }
+}
+
+void print_time(int hours, int minutes, char ampm) // function to print the time in 12-hour format with AM/PM
+{
+    cout << "Time in 12-hour format: " << hours << ":" << setw(2) << setfill('0') << minutes << " " << ampm << endl;
+}
