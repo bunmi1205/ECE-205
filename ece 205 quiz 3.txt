@@ -1,0 +1,86 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+const int MAX_SCORES = 100; // maximum number of scores
+int scores[MAX_SCORES];
+int num_scores = 0; // number of scores entered by the user
+
+void input_scores() {
+    int score;
+    cout << "Enter exam scores (negative number to end and display results): ";
+    while (true) {
+        cin >> score;
+        if (score < 0) {
+            break; // end input on negative number
+        }
+        if (score <= 100) {
+            scores[num_scores++] = score; // store valid score
+        } else {
+            cout << "Invalid score. Please enter a score between 0 and 100." << endl;
+        }
+    }
+}
+
+int find_max() {
+    int max_score = scores[0]; // initialize max_score to the first score
+    for (int i = 1; i < num_scores; i++) { // start from the second score
+        if (scores[i] > max_score) { // update max_score if current score is greater
+            max_score = scores[i]; // update max_score
+        }
+    }
+    return max_score;
+}
+
+int find_min() {
+    int min_score = scores[0]; // initialize min_score to the first score
+    for (int i = 1; i < num_scores; i++) { // start from the second score
+        if (scores[i] < min_score) { // update min_score if current score is smaller
+            min_score = scores[i]; // update min_score
+        }
+    }
+    return min_score;
+}
+
+double calculate_average() {
+    double sum = 0.0; // initialize sum to 0
+    for (int i = 0; i < num_scores; i++) { // iterate through scores to calculate sum
+        sum += scores[i]; // add current score to sum
+    }
+    return sum / num_scores; // return average by dividing sum by number of scores
+}
+
+double calculate_standard_deviation() {
+    double average = calculate_average(); // calculate average to use in standard deviation calculation
+    double sum_squared_diff = 0.0; // initialize sum of squared differences to 0
+    for (int i = 0; i < num_scores; i++) { // iterate through scores to calculate sum of squared differences
+        double diff = scores[i] - average; // calculate difference from average for current score
+        sum_squared_diff += diff * diff; // add squared difference to sum of squared differences
+    }
+    return sqrt(sum_squared_diff / num_scores); // return standard deviation by taking the square root of the average of squared differences
+}
+
+int main() {
+    input_scores(); // get user input for scores
+
+    if (num_scores > 0) { // check if any scores were entered
+        int max_score = find_max(); // find maximum score
+        int min_score = find_min(); // find minimum score
+        double average = calculate_average(); // calculate average
+        double std_dev = calculate_standard_deviation(); // calculate standard deviation
+
+        //Outputs
+        cout << fixed << setprecision(2); // output to 2 decimal places
+        cout << "Max Score: " << max_score << endl;
+        cout << "Min Score: " << min_score << endl;
+        cout << "Average Score: " << average << endl;
+        cout << "Standard Deviation: " << std_dev << endl;
+    } else {
+        cout << "No scores entered." << endl;
+    }
+
+    return 0;
+}
+
