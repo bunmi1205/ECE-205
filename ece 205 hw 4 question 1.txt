@@ -1,0 +1,56 @@
+#include <iostream>
+using namespace std;
+
+void calculateHistogram(int numbers[], int size, int histogram[], int numBins) { // calculates histogram based on input numbers
+    for (int i = 0; i < size; i++) { // for each number, determine which bin it belongs to and increment that bin's count
+        int bin = numbers[i] / 10; // determine bin index by dividing number by 10
+        histogram[bin]++; // increment the count for that bin
+    }
+}
+
+void displayHistogram(int histogram[], int numBins) { // displays the histogram
+    for (int i = 0; i < numBins; i++) { // for each bin, display the range and the count
+        cout << i * 10 << "-" << (i * 10 + 9) << ": " << histogram[i] << endl; 
+    }
+}
+
+int main() { 
+    int size; // variable to hold the number of integers to be input
+    cout << "Enter number of integers: "; // prompt user for the size of the input array
+    cin >> size; // read the size of the input array
+
+    if (size <= 0) { // validate that the size is positive
+        cout << "Invalid size." << endl;
+        return 1;
+    }
+
+    int* numbers = new int[size]; // dynamically allocate an array to hold the input numbers
+
+    
+    for (int i = 0; i < size; i++) { // loop to read each number with validation to ensure it's non-negative
+        do { // prompt user for a non-negative integer until a valid input is received
+            cout << "Enter non-negative integer " << i + 1 << ": ";
+            cin >> numbers[i];
+        } while (numbers[i] < 0);
+    }
+
+    
+    int maxVal = numbers[0]; // find the maximum value in the input array to determine the number of bins needed for the histogram
+    for (int i = 1; i < size; i++) { // loop through the numbers to find the maximum value
+        if (numbers[i] > maxVal) { 
+            maxVal = numbers[i]; 
+        }
+    }
+
+    int numBins = (maxVal / 10) + 1; // calculate the number of bins needed based on the maximum value (each bin represents a range of 10)
+    int* histogram = new int[numBins](); // initialized to 0
+
+    calculateHistogram(numbers, size, histogram, numBins); // calculate the histogram based on the input numbers
+    displayHistogram(histogram, numBins); // display the histogram to the user
+
+    
+    delete[] numbers; // free the dynamically allocated memory for the input numbers
+    delete[] histogram; // free the dynamically allocated memory for the histogram
+
+    return 0;
+}

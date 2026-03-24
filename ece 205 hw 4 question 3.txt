@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+void displaySeats(char seats[10][4]) { // displays the seating arrangement
+    for (int i = 0; i < 10; i++) { // loop through each row of seats
+        cout << i + 1 << " ";
+        for (int j = 0; j < 4; j++) { // loop through each seat in the row and display its status (available or taken)
+            cout << seats[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    char seats[10][4]; // declare a 2D array to represent the seating arrangement (10 rows and 4 columns)
+
+    
+    for (int i = 0; i < 10; i++) // loop through each row and initialize the seats with letters A, B, C, D to represent available seats
+        for (int j = 0; j < 4; j++) // loop through each seat in the row and assign it a letter based on its column index
+            seats[i][j] = 'A' + j; // assign 'A' to the first seat, 'B' to the second, 'C' to the third, and 'D' to the fourth
+
+    char choice = 'y'; // variable to control the loop for booking seats, initialized to 'y' to start the loop
+
+    while (choice == 'y') { // loop to allow the user to book multiple seats until they choose to stop
+        displaySeats(seats); // call the function to display the current seating arrangement to the user
+
+        int row; // variable to hold the row number input by the user
+        char col; // variable to hold the column letter input by the user
+
+        cout << "Enter seat row and letter (case-sensitive): ";
+        cin >> row >> col;
+
+        int colIndex = col - 'A'; // convert the column letter to an index (0 for 'A', 1 for 'B', etc.) by subtracting the ASCII value of 'A' from the input character
+
+        if (row >= 1 && row <= 10 && colIndex >= 0 && colIndex < 4) { //validate the user input for row and column to ensure they are within the valid range of the seating arrangement
+            if (seats[row - 1][colIndex] != 'X') { // check if the selected seat is available (not marked with 'X')
+                seats[row - 1][colIndex] = 'X'; // mark the seat as taken by changing its value to 'X'
+            } else {
+                cout << "Seat already taken!\n";
+                continue;
+            }
+        } else {
+            cout << "Invalid seat!\n";
+            continue;
+        }
+
+        cout << "Continue? (y/n): ";
+        cin >> choice;
+    }
+
+    return 0;
+}

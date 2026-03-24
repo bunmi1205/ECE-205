@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+float calculateScore(float scores[], float difficulty) { // calculates the final score based on the input scores and difficulty level
+    float max = scores[0], min = scores[0], sum = 0; // initialize max and min to the first score, and sum to 0
+
+    for (int i = 0; i < 7; i++) { // loop through the scores to find the maximum, minimum, and sum of the scores
+        if (scores[i] > max) max = scores[i];   // update max if the current score is greater than the current max
+        if (scores[i] < min) min = scores[i];  // update min if the current score is less than the current min
+        sum += scores[i];                       // add the current score to the sum
+    }
+
+    sum = sum - max - min; // subtract the maximum and minimum scores from the sum to get the total of the middle five scores
+
+    return sum * difficulty * 0.6; // calculate the final score by multiplying the sum of the middle five scores by the difficulty level and a constant factor (0.6)
+}
+
+int main() {
+    float scores[7], difficulty; // declare an array to hold the 7 scores and a variable for the difficulty level
+
+    do { // prompt the user to enter a valid difficulty level between 1.2 and 3.8
+        cout << "Enter difficulty (1.2 - 3.8): ";
+        cin >> difficulty;
+    } while (difficulty < 1.2 || difficulty > 3.8);
+
+    for (int i = 0; i < 7; i++) { // loop to read each of the 7 scores with validation to ensure they are between 0 and 10
+        do { // prompt user for a score until a valid input is received
+            cout << "Enter score " << i + 1 << " (0 - 10): ";
+            cin >> scores[i];
+        } while (scores[i] < 0 || scores[i] > 10);
+    }
+
+    float result = calculateScore(scores, difficulty); // call the function to calculate the final score based on the input scores and difficulty level
+
+    cout << "Final Score: " << result << endl;
+
+    return 0;
+}
