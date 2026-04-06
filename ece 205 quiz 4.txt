@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>  
+using namespace std;
+
+class Book {
+private:
+    string category; // private member variable to hold the book category
+    int publishingYear; // private member variable to hold the publishing year
+    int ISBN; // private member variable to hold the ISBN number
+
+public:
+    Book(string cat, int year, int isbn) : category(cat), publishingYear(year), ISBN(isbn) {} // constructor to initialize the book parameters 
+    bool isAvailable() const { // member function to check if the book is available based on the specified criteria
+        return (category == "history" && publishingYear > 1950); // return true if the category is "history" and the publishing year is greater than 1950, otherwise return false
+    }
+};
+
+void displayAvailability(const Book& book) { // non-member function to display the availability of the book
+    if (book.isAvailable()) { // check if the book is available by calling the isAvailable member function
+        cout << "The book is available in the store." << endl; // output if the book is available
+    } else {
+        cout << "The book is not available in the store." << endl; // output if the book is not available
+    }
+}
+
+int main() {
+    string category; // variable to hold the user input for book category
+    int year; // variable to hold the user input for publishing year
+    int isbn; // variable to hold the user input for ISBN number
+
+    cout << "Enter book category: "; // prompt user for book category
+    cin >> category; // read the book category from user input
+
+    cout << "Enter publishing year: "; // prompt user for publishing year
+    cin >> year; // read the publishing year from user input
+
+    cout << "Enter ISBN number: "; // prompt user for ISBN number
+    cin >> isbn; // read the ISBN number from user input
+
+    Book myBook(category, year, isbn); // create an instance of the Book class using the user input
+
+    displayAvailability(myBook); // call the function to display the availability of the book
+
+    return 0;
+}
+
