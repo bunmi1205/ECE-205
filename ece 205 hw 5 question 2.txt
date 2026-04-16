@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Pizza {
+private:    string type; // types: deep dish, hand tossed, or pan 
+    string size; //size: small, medium, or large
+    int toppings; // number of pepperoni or cheese toppings
+public:
+    void setType(string t) { // set the type of pizza
+        type = t;
+    }
+
+    void setSize(string s) { // set the size of the pizza
+        size = s;
+    }
+
+    void setToppings(int t) { // set the number of toppings on the pizza
+        toppings = t;
+    }
+
+    string getType() { // get the type of pizza
+        return type;
+    }
+
+    string getSize() { // get the size of the pizza
+        return size;
+    }
+
+    int getToppings() { // get the number of toppings on the pizza
+        return toppings;
+    }
+
+    void outputDescription() { // output the description of the pizza
+        cout << "Pizza Type: " << type << endl;
+        cout << "Pizza Size: " << size << endl;
+        cout << "Number of Toppings: " << toppings << endl;
+    }
+
+    double computePrice() { // compute and return the price of the pizza
+
+        double basePrice = 0; // base price of the pizza based on its size
+        if (size == "small") { // if the pizza is small, set the base price to $10
+            basePrice = 10;
+        } else if (size == "medium") { // if the pizza is medium, set the base price to $14
+            basePrice = 14;
+        } else if (size == "large") { // if the pizza is large, set the base price to $17
+            basePrice = 17;
+        }
+        return basePrice + (2 * toppings); // return the total price of the pizza, which is the base price plus $2 for each topping
+    }
+
+};
+
+int main() {
+    Pizza pizza; // create an instance of the Pizza class
+    string type, size; // variables to hold user input for pizza type and size
+    int toppings; // variable to hold user input for number of toppings
+
+    cout << "Enter pizza type (deep dish, hand tossed, or pan): "; // prompt the user to enter the type of pizza
+    getline(cin, type); // read the pizza type from user input
+    pizza.setType(type); // set the pizza type in the pizza object
+
+    cout << "Enter pizza size (small, medium, or large): "; // prompt the user to enter the size of the pizza
+    getline(cin, size); // read the pizza size from user input
+    pizza.setSize(size); // set the pizza size in the pizza object
+
+    cout << "Enter number of toppings: "; // prompt the user to enter the number of toppings on the pizza
+    cin >> toppings; // read the number of toppings from user input
+    pizza.setToppings(toppings); // set the number of toppings in the pizza object
+
+    cout << "\nPizza Description:" << endl; // output a header for the pizza description
+    pizza.outputDescription(); // call the outputDescription method to display the details of the pizza
+
+    double price = pizza.computePrice(); // compute the price of the pizza using the computePrice method
+    cout << "Price of the pizza: $" << price << endl; // output the price of the pizza to the user
+
+    return 0;
+}
+

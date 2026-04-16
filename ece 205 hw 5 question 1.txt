@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+
+class BicycleSpeedometer { // class to calculate the average speed of a bicycle rider
+private:    double distance; // distance in miles
+    double time; // time in minutes
+public:
+    void setDistance(double dist) { // set the distance traveled
+        distance = dist;
+    }
+    void setTime(double t) { // set the time taken
+        time = t;
+    }
+    double getAverageSpeed() { // calculate and return the average speed in miles per hour
+        if (time == 0) return 0; // avoid division by zero
+        return (distance / time) * 60; // convert minutes to hours
+    }
+};
+
+int main() {
+    BicycleSpeedometer speedometer; // create an instance of the BicycleSpeedometer class
+    double distance, time; // variables to hold user input for distance and time
+
+    cout << "Enter distance traveled (in miles): "; // prompt the user to enter the distance traveled
+    cin >> distance; // read the distance from user input
+    speedometer.setDistance(distance); // set the distance in the speedometer object
+
+    cout << "Enter time taken (in minutes): "; // prompt the user to enter the time taken
+    cin >> time; // read the time from user input
+    speedometer.setTime(time); // set the time in the speedometer object
+
+    double averageSpeed = speedometer.getAverageSpeed(); // calculate the average speed using the getAverageSpeed method
+    cout << "Average speed of the rider: " << averageSpeed << " miles per hour" << endl; // output the average speed to the user
+
+    return 0;
+}
+

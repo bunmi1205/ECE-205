@@ -1,0 +1,100 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class Pizza {
+private:    string type; // types: deep dish, hand tossed, or pan
+    string size; //size: small, medium, or large
+    int toppings; // number of pepperoni or cheese toppings
+public:    void setType(string t) { // set the type of pizza
+        type = t;
+    }
+    void setSize(string s) {  // set the size of the pizza
+        size = s;
+    }
+    void setToppings(int t) { // set the number of toppings on the pizza
+        toppings = t;
+    }
+    string getType() { // get the type of pizza
+        return type;
+    }
+    string getSize() { // get the size of the pizza
+        return size;
+    }
+    int getToppings() { // get the number of toppings on the pizza
+        return toppings;
+    }
+
+    void outputDescription() const{ // output the description of the pizza
+        cout << "Pizza Type: " << type << endl;
+        cout << "Pizza Size: " << size << endl;
+        cout << "Number of Toppings: " << toppings << endl;
+    }
+
+    double computePrice() const{ // compute and return the price of the pizza
+        double basePrice = 0; // base price of the pizza based on its size
+        if (size == "small") {
+            basePrice = 10;
+        } else if (size == "medium") {
+            basePrice = 14;
+        } else if (size == "large") {
+            basePrice = 17;
+        }
+        return basePrice + (2 * toppings);
+    }
+
+};
+
+class Order {
+private:    vector<Pizza> pizzas; // Vector to hold multiple pizzas in the order
+public:    void addPizza(const Pizza& pizza) { // Add a pizza to the order
+        pizzas.push_back(pizza); // Add a pizza to the order
+    }
+    void outputOrder() { // Output the details of the order and total price
+        double totalPrice = 0; // Variable to hold the total price of the order
+        cout << "Order Details:" << endl;
+        for (const auto& pizza : pizzas) { // Loop through each pizza in the order
+            pizza.outputDescription(); // Output the description of the pizza
+            double price = pizza.computePrice(); // Compute the price of the pizza
+            cout << "Price: $" << price << endl;
+            totalPrice += price; // Add the price of the pizza to the total price
+            cout << "-------------------" << endl;
+        }
+        cout << "Total Price: $" << totalPrice << endl;
+    }
+};
+
+int main() {
+    Order order; // Create an instance of the Order class
+    int numPizzas; // Variable to hold the number of pizzas in the order
+
+    cout << "Enter the number of pizzas in the order: ";
+    cin >> numPizzas;
+    cin.ignore(); // Ignore the newline character after reading numPizzas
+
+    for (int i = 0; i < numPizzas; ++i) {
+        Pizza pizza; // Create a new Pizza object
+        string type, size;
+        int toppings;
+
+        cout << "Enter pizza type (deep dish, hand tossed, or pan): ";
+        getline(cin, type);
+        pizza.setType(type);
+
+        cout << "Enter pizza size (small, medium, or large): ";
+        getline(cin, size);
+        pizza.setSize(size);
+
+        cout << "Enter number of toppings: ";
+        cin >> toppings;
+        cin.ignore(); // Ignore the newline character after reading toppings
+        pizza.setToppings(toppings);
+
+        order.addPizza(pizza); // Add the pizza to the order
+    }
+
+    order.outputOrder(); // Output the details of the order and total price
+
+    return 0;
+}

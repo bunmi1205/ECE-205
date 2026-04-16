@@ -1,0 +1,89 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class PrimeNumber {
+private:
+    int prime;
+
+public:
+    // Default constructor
+    PrimeNumber() : prime(1) {}
+
+    // Parameterized constructor
+    PrimeNumber(int p) : prime(p) {}
+
+    // Function to get the prime number
+    int getPrime() const {
+        return prime;
+    }
+
+    // Prefix ++ operator
+    PrimeNumber& operator++() {
+        // Find the next prime number
+        prime++;
+        while (!isPrime(prime)) {
+            prime++;
+        }
+        return *this;
+    }
+
+    // Postfix ++ operator
+    PrimeNumber operator++(int) {
+        PrimeNumber temp(*this);
+        ++(*this);
+        return temp;
+    }
+
+    // Prefix -- operator
+    PrimeNumber& operator--() {
+        // Find the previous prime number (simplified approach)
+        prime--;
+        while (prime > 1 && !isPrime(prime)) {
+            prime--;
+        }
+        return *this;
+    }
+
+    // Postfix -- operator
+    PrimeNumber operator--(int) {
+        PrimeNumber temp(*this);
+        --(*this);
+        return temp;
+    }
+
+private:
+    // Helper function to check if a number is prime
+    bool isPrime(int n) const {
+        if (n <= 1) return false;
+        if (n <= 3) return true;
+        if (n % 2 == 0 || n % 3 == 0) return false;
+        for (int i = 5; i * i <= n; i += 6) {
+            if (n % i == 0 || n % (i + 2) == 0) return false;
+        }
+        return true;
+    }
+};
+
+int main() {
+    int initialPrime;
+    cout << "Enter a prime number: ";
+    cin >> initialPrime;
+
+    PrimeNumber primeNum(initialPrime);
+    cout << "Current prime number: " << primeNum.getPrime() << endl;
+
+    ++primeNum;
+    cout << "Next prime number (prefix ++): " << primeNum.getPrime() << endl;
+
+    primeNum++;
+    cout << "Next prime number (postfix ++): " << primeNum.getPrime() << endl;
+
+    --primeNum;
+    cout << "Previous prime number (prefix --): " << primeNum.getPrime() << endl;
+
+    primeNum--;
+    cout << "Previous prime number (postfix --): " << primeNum.getPrime() << endl;
+
+    return 0;
+}
