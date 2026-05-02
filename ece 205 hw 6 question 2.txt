@@ -1,0 +1,51 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void deleteRepeatedChars(vector<char>& myVector) { // Function to delete repeated characters from the vector
+    for (size_t i = 0; i < myVector.size(); ++i) { // Iterate through each character in the vector  
+        for (size_t j = i + 1; j < myVector.size(); ++j) { // Compare the current character with the subsequent characters
+            if (myVector[i] == myVector[j]) { // If a repeated character is found
+                myVector.erase(myVector.begin() + j); // Remove the repeated character
+                --j; // Adjust index after erasing
+            }
+        }
+    }
+}
+
+void selectionSort(vector<char>& myVector) { // Function to sort the vector in decreasing order 
+    for (size_t i = 0; i < myVector.size(); ++i) { // Iterate through each character in the vector
+        size_t maxIndex = i; // Assume the current character is the maximum
+        for (size_t j = i + 1; j < myVector.size(); ++j) { // Compare the current maximum with the subsequent characters
+            if (myVector[j] > myVector[maxIndex]) { // Sort in decreasing order 
+                maxIndex = j; // Update the index of the maximum character found
+            }
+        }
+        swap(myVector[i], myVector[maxIndex]); // Swap the found maximum element with the first element
+    }
+}
+
+int main() {
+    vector<char> myVector; // Vector to store the input characters
+    char input; // Variable to hold the user input
+
+    cout << "Enter characters (enter '0' to stop): ";
+    while (true) { // Continuously read characters until '0' is entered
+        cin >> input;
+        if (input == '0') { 
+            break; // End input on character '0'
+        }
+        myVector.push_back(input); // Add the valid input character to the vector
+    }
+
+    deleteRepeatedChars(myVector); // Remove repeated characters from the vector
+    selectionSort(myVector); // Sort the vector in decreasing order
+
+    cout << "Unique characters in decreasing order: ";
+    for (char c : myVector) { // Output the unique characters in decreasing order
+        cout << c << " ";
+    }
+    cout << endl;
+
+    return 0;
+}

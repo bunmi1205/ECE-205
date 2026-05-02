@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void sieveOfEratosthenes(int N, vector<int>& primes) { // Function to find all prime numbers less than N using the Sieve of Eratosthenes algorithm
+    vector<bool> isPrime(N, true); // Initialize all numbers as prime
+    isPrime[0] = isPrime[1] = false; // 0 and 1 are not prime
+
+    for (int i = 2; i * i < N; ++i) { // Iterate through numbers starting from 2 up to the square root of N
+        if (isPrime[i]) { // If i is prime, mark all multiples of i as non-prime
+            for (int j = i * i; j < N; j += i) { // Start marking from i*i to avoid marking smaller multiples of i that have already been marked by smaller primes
+                isPrime[j] = false; // Mark multiples of i as non-prime
+            }
+        }
+    }
+
+    for (int i = 2; i < N; ++i) { // Collect all prime numbers less than N
+        if (isPrime[i]) { // If i is prime, add it to the list of primes
+            primes.push_back(i); // Collect prime numbers into the primes vector
+        }
+    }
+}
+
+int main() {
+    int N; // Variable to hold the user input for the upper limit of prime numbers
+    vector<int> primes; // Vector to store the prime numbers less than N
+
+    cout << "Enter an integer N to find all prime numbers less than N: ";
+    cin >> N;
+
+    sieveOfEratosthenes(N, primes); // Call the function to find prime numbers less than N and store them in the primes vector
+
+    cout << "Prime numbers less than " << N << ": ";
+    for (int prime : primes) { // Output the prime numbers collected in the primes vector
+        cout << prime << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+
+
+

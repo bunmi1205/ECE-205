@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> getNumbers() { // Function to read integers from the user until a negative integer is entered
+    vector<int> numbers; // Vector to store the input numbers
+    cout << "Enter integers (negative integer to end): ";
+    int input; // Variable to hold the user input
+    while (cin >> input && input >= 0) { // Continue reading until a negative integer is entered
+        numbers.push_back(input); // Add the valid input to the vector
+    }
+    return numbers;
+}
+
+vector<int> calculateHistogram(const vector<int>& numbers) { // Function to calculate the histogram of the input numbers
+    vector<int> histogram; // Vector to store the count of numbers in each bin (0-9, 10-19, etc.)
+    for (int num : numbers) { // Iterate through each number in the input vector
+        int binIndex = num / 10; // Determine the bin index based on the number 
+       
+        if (binIndex >= static_cast<int>(histogram.size())) { // If the bin index exceeds the current size of the histogram vector, resize it
+            histogram.resize(binIndex + 1, 0); // Resize the histogram vector to accommodate the new bin index, initializing new bins with 0
+        }
+        histogram[binIndex]++; // Increment the count for the appropriate bin in the histogram
+    }
+    return histogram;
+}
+
+void displayHistogram(const vector<int>& histogram) { // Function to display the histogram in a readable format
+    cout << "\nHistogram:\n"; 
+    for (size_t i = 0; i < histogram.size(); ++i) { // Iterate through each bin in the histogram vector
+        cout << "Bin " << i + 1
+             << " (" << i * 10 << " - " << (i + 1) * 10 - 1 << "): "
+             << histogram[i] << "\n";
+    }
+}
+
+int main() {
+    vector<int> numbers = getNumbers(); // Get the input numbers from the user
+
+    if (numbers.empty()) { // Checks if the user entered any valid numbers  
+        cout << "No valid numbers entered.\n";
+        return 0;
+    }
+
+    vector<int> histogram = calculateHistogram(numbers); // Calculate the histogram based on the input numbers
+    displayHistogram(histogram); // Display the histogram to the user
+
+    return 0;
+}
