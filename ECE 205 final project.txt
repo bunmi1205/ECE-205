@@ -1,0 +1,191 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <sstream>
+#include <cctype>
+#include <stdexcept>
+#include <vector>
+#include <iomanip>
+using namespace std;
+
+struct Node { // Node structure for expression tree
+    string val; 
+    Node *left; 
+    Node *right;
+};
+
+Node* newNode(const string& val) { // Function to create a new node
+    Node* node = new Node; // Allocate memory for a new node
+    node->val = val; // Set the value of the node
+    node->left = nullptr; // Initialize left child to null
+    node->right = nullptr; // Initialize right child to null
+    return node;
+}
+
+// Function to determine the precedence of operators
+int precedence(char op) { 
+    if (op == '+' || op == '-') { // Check if the operator is '+' or '-'
+        return 1; // Return precedence level 1 for '+' and '-'
+    }
+    if (op == '*' || op == '/') { // Check if the operator is '*' or '/'
+        return 2; // Return precedence level 2 for '*' and '/'
+    }
+    return 0;
+}
+
+bool isOperator(char c) { // Function to check if a character is an operator
+    return c == '+' || c == '-' || c == '*' || c == '/'; // Check if the character is one of the operators
+}
+
+// Function to perform arithmetic operations
+int applyOperation(int a, int b, char op) { 
+    switch (op) { // Switch statement to determine the operation to perform based on the operator
+        case '+': return a + b; //
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': 
+            if (b == 0) { 
+                throw runtime_error("Division by zero");
+            }
+            return a / b;
+    }
+    return 0;
+}
+
+// Function to convert infix expression to postfix using Shunting Yard algorithm
+vector<string> infixToPostfix(const string& infix) { // Function to convert an infix expression to postfix notation
+    stack<char> operators; // Stack to hold operators during conversion
+    vector<string> output; // Vector to hold the resulting postfix expression
+    stringstream ss(infix); // String stream to read the infix expression token by token
+    string token; // Variable to hold the current token being processed
+
+    while (ss >> token) { // Loop to read each token from the infix expression
+        if (isdigit(token[0])) { // If the token is a number, add it to the output vector
+            output.push_back(token); 
+        } else if (token == "(") { // If the token is an opening parenthesis, push it onto the operator stack
+            operators.push('(');
+        } else if (token == ")") { // If the token is a closing parenthesis, pop operators from the stack to the output until an opening parenthesis is encountered
+            while (!operators.empty() && operators.top() != '(') { // Pop operators from the stack and add them to the output vector until an opening parenthesis is found
+                output.push_back(string(1, operators.top())); // Add the operator to the output vector
+                operators.pop();
+            }
+            if (!operators.empty()) { // Pop the opening parenthesis from the stack
+                operators.pop(); 
+            }
+        } else { // If the token is an operator, pop operators from the stack to the output while they have higher or equal precedence, then push the current operator onto the stack
+            while (!operators.empty() && precedence(operators.top()) >= precedence(token[0])) { 
+                output.push_back(string(1, operators.top()));
+                operators.pop();
+            }
+            operators.push(token[0]);
+        }
+    }
+
+    while (!operators.empty()) { // After processing all tokens, pop any remaining operators from the stack to the output vector
+        output.push_back(string(1, operators.top()));
+        operators.pop();
+    }
+
+    return output;
+}
+// Function to construct an expression tree from a postfix expression
+Node* constructExpressionTree(const vector<string>& postfix) {
+    stack<Node*> nodes;
+
+    for (const string& token : postfix) { // Loop through each token in the postfix expression
+        if (isdigit(token[0])) { // If the token is a number, create a new node and push it onto the stack
+            nodes.push(newNode(token));
+        } else { // If the token is an operator, pop two nodes from the stack, create a new node with the operator, and push it back onto the stack
+            Node* right = nodes.top(); nodes.pop(); // Pop the right operand from the stack
+            Node* left = nodes.top(); nodes.pop();
+            Node* opNode = newNode(token); // Create a new node for the operator
+            opNode->left = left;
+            opNode->right = right;
+            nodes.push(opNode);
+        }
+    }
+
+    return nodes.top();
+}
+
+void postorder(Node* root) { // Function to perform postorder traversal of the expression tree
+    if (root == nullptr) return; 
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->val << " ";
+}
+
+void printTree(Node* root, int space = 0, int height = 10) { // Function to print the expression tree in a rotated format
+    if (root == nullptr) return; 
+    space += height; //
+    printTree(root->right, space);
+    cout << endl;
+    for (int i = height; i < space; i++) {
+        cout << " ";
+    }
+    cout << root->val << endl;
+    printTree(root->left, space);
+}
+
+// step 4: collect postorder sequence, then evaluate using a stack
+void postorderTraversal(Node* root, vector<string>& result) { // Function to collect the postorder traversal of the expression tree into a vector
+    if (root == nullptr) return;
+    postorderTraversal(root->left, result);
+    postorderTraversal(root->right, result);
+    result.push_back(root->val);
+}
+
+
+// Function to evaluate a postfix expression using a stack
+int evaluatePostfix(const vector<string>& postfix) { 
+    stack<int> values;
+
+    for (const string& token : postfix) { // Loop through each token in the postfix expression
+        if (isdigit(token[0])) { 
+            values.push(stoi(token));
+        } else { 
+            int b = values.top(); values.pop();
+            int a = values.top(); values.pop();
+            int result = applyOperation(a, b, token[0]);
+            values.push(result);
+        }
+    }
+
+    return values.top();
+}
+
+
+int main() {
+    string infix;
+    cout << "Enter an infix expression: ";
+    getline(cin, infix);
+
+    try {
+        vector<string> postfix = infixToPostfix(infix); // Convert the infix expression to postfix notation
+        cout << "Postfix expression: ";
+        for (const string& token : postfix) { // Print the resulting postfix expression
+            cout << token << " ";
+        }
+        cout << endl;
+
+        Node* root = constructExpressionTree(postfix); // Construct the expression tree from the postfix expression
+        cout << "Expression Tree (rotated):" << endl;
+        printTree(root);
+
+        cout << "Postorder traversal (postfix): "; // Perform a postorder traversal of the expression tree and print the values
+        postorder(root); 
+        cout << endl;
+
+        vector<string> postorderResult; // Collect the postorder traversal of the expression tree into a vector
+        postorderTraversal(root, postorderResult); // Evaluate the postfix expression using a stack and print the result
+
+        int result = evaluatePostfix(postfix); //
+        cout << "Result: " << result << endl;
+    } catch (const exception& e) { // Catch any exceptions that occur during the evaluation process and print an error message
+        cerr << "Error: " << e.what() << endl;
+    }
+
+    return 0;
+}
+
+
