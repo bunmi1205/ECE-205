@@ -1,0 +1,114 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+using namespace std;
+
+class Book { // Class to represent a book in the database
+private:
+    string author; // Author's name
+    string title; // Book title
+    int year; // Publication year
+
+public:
+    Book(const string& author, const string& title, int year) : author(author), title(title), year(year) {} // Constructor to initialize a book object
+    string getAuthor() const { return author; } // Get author's name
+    string getTitle() const { return title; } // Get book title
+    int getYear() const { return year; } // Get publication year
+
+    void print() const { // Function to print book details
+        cout << "Author: " << author << ", Title: " << title << ", Year: " << year << endl;
+    }
+
+    bool operator<(const Book& other) const { // Overload the less-than operator for sorting by author
+        return author < other.author; // Compare authors for sorting
+    }
+
+    bool operator==(const string& bookTitle) const { // Overload the equality operator to compare book title
+        return title == bookTitle; // Check if the book title matches
+    }
+};
+
+class BookDatabase { // Class to manage the book database
+private:
+    vector<Book> books; // Vector to store book objects
+
+public:
+    void addBook(const string& author, const string& title, int year) { // Function to add a book to the database
+        books.emplace_back(author, title, year); // Create a new book object and add it to the vector
+    }
+
+    void removeBook(const string& title) { // Function to remove a book from the database by title
+        auto it = find_if(books.begin(), books.end(), [&title](const Book& book) { // Find the book with the given title
+            return book == title; // Use the overloaded equality operator to compare titles
+        });
+
+        if (it != books.end()) { // If the book is found, remove it from the vector
+            books.erase(it); // Remove the book from the vector
+            cout << "Book removed: " << title << endl; // Print confirmation message
+        } else {
+            cout << "Book not found: " << title << endl; // Print error message if the book is not found
+        }
+    }
+
+    void printBooks() { // Function to print an alphabetical list of books sorted by author
+        sort(books.begin(), books.end()); // Sort the books using the overloaded less-than operator
+        for (const Book& book : books) { // Loop through the sorted vector and print each book's details
+            book.print(); // Print the details of the book
+        }
+    }
+
+    void menu() { // Function to display the menu and handle user input
+        int choice;
+        do {
+            cout << "Menu:" << endl;
+            cout << "1. Add a book" << endl;
+            cout << "2. Remove a book" << endl;
+            cout << "3. Print books" << endl;
+            cout << "4. Exit" << endl;
+            cout << "Enter your choice: ";
+            cin >> choice; // Get user choice
+
+            switch (choice) { // Handle user choice
+                case 1: {
+                    string author, title;
+                    int year;
+                    cout << "Enter author name: ";
+                    cin.ignore(); // Ignore newline character from previous input
+                    getline(cin, author); // Get author's name
+                    cout << "Enter book title: ";
+                    getline(cin, title); // Get book title
+                    cout << "Enter publication year: ";
+                    cin >> year; // Get publication year
+                    addBook(author, title, year); // Add the book to the database
+                    break;
+                }
+                case 2: {
+                    string title;
+                    cout << "Enter book title to remove: ";
+                    cin.ignore(); // Ignore newline character from previous input
+                    getline(cin, title); // Get book title to remove
+                    removeBook(title); // Remove the book from the database
+                    break;
+                }
+                case 3:
+                    printBooks(); // Print the list of books
+                    break;
+                case 4:
+                    cout << "Exiting..." << endl; // Exit message
+                    break;
+                default:
+                    cout << "Invalid choice. Please try again." << endl; // Handle invalid input
+            }
+        } while (choice != 4); // Loop until the user chooses to exit
+    }
+
+};
+
+int main() {
+    BookDatabase db; // Create an instance of the book database
+    db.menu(); // Display the menu and start the program
+    return 0; // Exit the program
+}
+
